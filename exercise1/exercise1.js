@@ -3,8 +3,18 @@ var bodyParser = require('body-parser');
 var app = express();
 var PORT = 8080;
 
+function myLoggingMiddleware(req, res, next){
+  var url = req.url;
+  var method = req.method;
+
+  console.log('%s request at %s',  method, url);
+  next();
+}
+
 // This is the bodyParser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(myLoggingMiddleware);
 
 app.get('/', function(req, res){
   res.sendFile(process.cwd() + '/views/index.html');
